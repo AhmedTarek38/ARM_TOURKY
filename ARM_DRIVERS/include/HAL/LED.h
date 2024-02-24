@@ -14,8 +14,8 @@
 #define LED_ON            0X00000001
 #define LED_OFF           0x00000000
 
-#define LED_FORWARD       0x00000001
-#define LED_REVERSE       0x00000000
+#define LED_FORWARD       0x00000000
+#define LED_REVERSE       0x00000001
 
 
 typedef struct

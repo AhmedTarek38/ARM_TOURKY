@@ -43,7 +43,7 @@ LED_enuErrorStatus_t LED_Init(void)
 * @brief    : Function to set the value of a specified lED to a specific state
 * @param[in]: LED , LEDState
 * @return   : Error status (LED_enuOk,LED_enuNOK)
-* @details  : Function to set the value of a specified lED to a specific state either HIGH OR LOW
+* @details  : Function to set the value of a specified lED to a specific state either ON OR OFF
 */
 
 LED_enuErrorStatus_t LED_SetStatus(u32 LED, u32 LEDStatus)
