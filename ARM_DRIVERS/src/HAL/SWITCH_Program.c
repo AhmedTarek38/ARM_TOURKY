@@ -33,7 +33,7 @@ return Ret_enuErrorStatusSWITCH;
 
 }
 
-SWITCH_enuErrorStatus_t SWITCH_SetStatus(u32 SWITCH_NAME, u32 * ptr_TO_SWITCHStatus)
+SWITCH_enuErrorStatus_t SWITCH_SetStatus(SWITCHES_t SWITCH_NAME, u32 * ptr_TO_SWITCHStatus)
 
 {
 	SWITCH_enuErrorStatus_t Ret_enuErrorStatusSWITCH = SWITCH_enuOK;

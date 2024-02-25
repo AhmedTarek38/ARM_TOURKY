@@ -1,4 +1,12 @@
 /*
+ * main.c
+ *
+ *  Created on: Feb 25, 2024
+ *      Author: ahmed tarek
+ */
+
+
+/*
  * This file is part of the µOS++ distribution.
  *   (https://github.com/micro-os-plus)
  * Copyright (c) 2014 Liviu Ionescu.
@@ -30,7 +38,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "diag/trace.h"
+#include "MCAL/RCC_Interface.h"
+#include "MCAL/GPIO_Interface.h"
+#include "HAL/SWITCH_Interface.h"
+#include "HAL/LED.h"
 
+#define ENABLE 1
+#define DISABLE 0
 // ----------------------------------------------------------------------------
 //
 // Standalone STM32F4 empty sample (trace via DEBUG).
@@ -51,17 +65,47 @@
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 
-int
-main(int argc, char* argv[])
-{
-  // At this stage the system clock should have already been configured
-  // at high speed.
 
-  // Infinite loop
+int main(void)
+{
+       RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
+       RCC_SelectSysClk(CLOCK_enuHSI);
+       RCC_ConfigurePresc(AHB_PRESCALER,AHB_DIVISION_BY_64);
+       RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
+       RCC_ControlPeripheral(RCC_AHB1,GPIOB,ENABLE);
+
+	   LED_Init();
+	   SWITCH_Init();
+	   u32 s1=0;
+	   u32 s2=0;
+
+
+
   while (1)
     {
-       // Add your code here.
+	  SWITCH_SetStatus(SWITCH_1, &s1);
+	  SWITCH_SetStatus(SWITCH_2, &s2);
+
+	 if (s1== SWITCH_PRESSED)
+	  {
+
+		  LED_SetStatus(LED_1, LED_ON);
+		  LED_SetStatus(LED_1, LED_OFF);
+	  }
+
+	  if (s2== SWITCH_PRESSED)
+	 	  {
+
+	 	  LED_SetStatus(LED_2, LED_ON);
+	 	 LED_SetStatus(LED_2, LED_OFF);
+	 	  }
+
+
+
+
+
     }
+  return 0;
 }
 
 #pragma GCC diagnostic pop

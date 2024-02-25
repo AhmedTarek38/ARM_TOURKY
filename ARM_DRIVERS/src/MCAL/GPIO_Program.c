@@ -8,6 +8,16 @@ GPIO_enuErrorStatus_t GPIO_InitPin (GPIO_PinConfig_t *ptrToPinConfig)
 {
 	GPIO_enuErrorStatus_t Ret_enuErrorStatusGPIO = GPIO_enuOk;
 
+	  if (ptrToPinConfig == NULL)
+	   		    {
+	   		         Ret_enuErrorStatusGPIO = GPIO_NULLPOINTER ;
+	   		    }
+	   		    else if ((ptrToPinConfig->Port > GPIOH_BASEADD) || (ptrToPinConfig->Pin > GPIO_PIN15))
+	   		    {
+	   		    	Ret_enuErrorStatusGPIO = GPIO_WRONGPortORPin ;
+	   		    }
+	   		    else
+	   		    {
     u32 Loc_MODER=0;
     u32 Loc_OTYPER=0;
 	u32 Loc_OSPEEDR=0;
@@ -38,16 +48,7 @@ GPIO_enuErrorStatus_t GPIO_InitPin (GPIO_PinConfig_t *ptrToPinConfig)
     Loc_PUPDR=((GPIO_PortRegisters*)(ptrToPinConfig->Port))->GPIO_PUPDR;
 
 
-    if (ptrToPinConfig == NULL)
-   		    {
-   		         Ret_enuErrorStatusGPIO = GPIO_NULLPOINTER ;
-   		    }
-   		    else if ((ptrToPinConfig->Port > GPIOH_BASEADD) || (ptrToPinConfig->Pin > GPIO_PIN15))
-   		    {
-   		    	Ret_enuErrorStatusGPIO = GPIO_WRONGPortORPin ;
-   		    }
-   		    else
-   		    {
+
     /*Clear bits which will be configured according to the provided configuration from the user*/
     Loc_MODER    &= ~((GPIO_CLEAR_MODE_BITS)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
     Loc_OSPEEDR  &= ~((GPIO_CLEAR_SPEED_BITS) <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
@@ -55,10 +56,10 @@ GPIO_enuErrorStatus_t GPIO_InitPin (GPIO_PinConfig_t *ptrToPinConfig)
     Loc_OTYPER   &= ~((GPIO_CLEAR_OUTTYPE_BIT)<<((ptrToPinConfig->Pin)));
 
     /*SET bits which will be configured according to the provided configuration from the user*/
-     Loc_MODER    |= ((GPIO_CLEAR_MODE_BITS)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
-     Loc_OSPEEDR  |= ((GPIO_CLEAR_SPEED_BITS) <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
-     Loc_PUPDR    |= ((GPIO_CLEAR_PUPD_BITS)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
-     Loc_OTYPER   |= ((GPIO_CLEAR_OUTTYPE_BIT)<<((ptrToPinConfig->Pin)));
+     Loc_MODER    |= ((Loc_ModeValue)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
+     Loc_OSPEEDR  |= ((ptrToPinConfig->Speed) <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
+     Loc_PUPDR    |= ((Loc_PUPDValue)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
+     Loc_OTYPER   |= ((Loc_OTYPER)<<((ptrToPinConfig->Pin)));
 
 /*write the configuration on the register(configured by the user) to init the pin*/
     ((GPIO_PortRegisters *)(ptrToPinConfig -> Port)) -> GPIO_MODER   = Loc_MODER;
@@ -76,6 +77,7 @@ return Ret_enuErrorStatusGPIO;
 GPIO_enuErrorStatus_t  GPIO_Set_PinValue(void *Port , u32 PinNum , u32 PinStatus )
      {
 		GPIO_enuErrorStatus_t Ret_enuErrorStatusGPIO = GPIO_enuOk;
+		u8 Loc_var=0;
 
 		 if (Port == NULL)
 		    {
@@ -85,14 +87,29 @@ GPIO_enuErrorStatus_t  GPIO_Set_PinValue(void *Port , u32 PinNum , u32 PinStatus
 		    {
 		    	Ret_enuErrorStatusGPIO = GPIO_WRONGPortORPin ;
 		    }
-		    else if ((PinStatus != GPIO_SET_PIN ) && (PinStatus != GPIO_RESET_PIN ))
+		    else if ((PinStatus != GPIO_HIGH ) && (PinStatus != GPIO_LOW ))
 		    {
 		    	Ret_enuErrorStatusGPIO = GPIO_WRONGStatus ;
 		    }
 		    else
 		    {
+		    	switch (PinStatus)
+		    	{
+		    	case GPIO_HIGH: ((GPIO_PortRegisters *)Port )->GPIO_BSRR = (BSSR_BIT_VALUE<< PinNum) ;
+		    		break;
 
-		        ((GPIO_PortRegisters *)Port )->GPIO_BSRR = PinStatus<< PinNum ;
+		    	case GPIO_LOW:
+		    		((GPIO_PortRegisters *)Port )->GPIO_BSRR = (BSSR_BIT_VALUE<< PinNum+BSSR_OFFSET) ;
+		    		break;
+
+		    	default: break;
+
+
+
+
+		    	}
+
+
 		    }
 		    return Ret_enuErrorStatusGPIO ;
 

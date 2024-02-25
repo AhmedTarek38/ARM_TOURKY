@@ -213,9 +213,9 @@ RCC_enuErrorStatus_t RCC_ControlPeripheral(u8 BusID, u8 Peripheral,u8 state)
 
 	RCC_enuErrorStatus_t Ret_enuErrorStatusRCC = RCC_enuNOK;
 	if     (  BusID!=RCC_AHB1
-			||BusID!=RCC_AHB2
-			||BusID!=RCC_APB1
-			||BusID!=RCC_APB2 )
+			&&BusID!=RCC_AHB2
+			&&BusID!=RCC_APB1
+			&&BusID!=RCC_APB2 )
 	{Ret_enuErrorStatusRCC=RCC_enuWRONGBusID;}
 	else
 {
@@ -261,8 +261,8 @@ RCC_enuErrorStatus_t RCC_ControlPeripheral(u8 BusID, u8 Peripheral,u8 state)
 	}
 
 	}
-}
 
+}
       return Ret_enuErrorStatusRCC;
 
 }
@@ -270,16 +270,17 @@ RCC_enuErrorStatus_t RCC_ControlPeripheral(u8 BusID, u8 Peripheral,u8 state)
 RCC_enuErrorStatus_t RCC_ConfigurePresc(u8 Presacaler_Type, u8 Division_Factor)
 
 { u8 LocPresc_config=rcc->RCC_CFGR;
-	RCC_enuErrorStatus_t Ret_enuErrorStatusRCC;
-	if (Division_Factor!=AHB_NO_DIVISION
-			|| Division_Factor!=AHB_DIVISION_BY_2
-			|| Division_Factor!=AHB_DIVISION_BY_4
-			|| Division_Factor!=AHB_DIVISION_BY_8
-			|| Division_Factor!=AHB_DIVISION_BY_16
-			|| Division_Factor!=AHB_DIVISION_BY_64
-			|| Division_Factor!=AHB_DIVISION_BY_128
-			|| Division_Factor!=AHB_DIVISION_BY_256
-			|| Division_Factor!=AHB_DIVISION_BY_512)
+	RCC_enuErrorStatus_t Ret_enuErrorStatusRCC=RCC_enuOK;
+	if ((Division_Factor!=AHB_NO_DIVISION)
+	        && (Division_Factor!=AHB_DIVISION_BY_2)
+	        && (Division_Factor!=AHB_DIVISION_BY_4)
+	        && (Division_Factor!=AHB_DIVISION_BY_8)
+	        && (Division_Factor!=AHB_DIVISION_BY_16)
+	        && (Division_Factor!=AHB_DIVISION_BY_64)
+	        && (Division_Factor!=AHB_DIVISION_BY_128)
+	        && (Division_Factor!=AHB_DIVISION_BY_256)
+	        && (Division_Factor!=AHB_DIVISION_BY_512))
+
 	{Ret_enuErrorStatusRCC=RCC_enuWrong_Prescalar_DivisionFactor;}
 	else
  {

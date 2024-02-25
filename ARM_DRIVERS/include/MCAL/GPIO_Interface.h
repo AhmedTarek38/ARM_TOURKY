@@ -51,6 +51,11 @@
 #define GPIO_HIGH_SPEED			0x00000002
 #define GPIO_VERY_HIGH_SPEED	0x00000003
 
+#define GPIO_HIGH               0x00000001
+#define GPIO_LOW                0x00000000
+
+#define BSSR_BIT_VALUE          0x00000001
+#define BSSR_OFFSET             0x00000010
 typedef struct
 {
 

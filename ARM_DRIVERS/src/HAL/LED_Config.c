@@ -16,13 +16,13 @@ LED_CFG_t LEDS [_LED_NUM]=
 				.PIN=GPIO_PIN0,
 				.PORT=GPIOA_BASEADD,
 				.Connection=LED_FORWARD,
-				.Default_state=LED_ON
+				.Default_state=LED_OFF
 		},
 
 		[LED_2]= {
 					.PIN=GPIO_PIN15,
 					.PORT=GPIOB_BASEADD,
-					.Connection=LED_REVERSE,
+					.Connection=LED_FORWARD,
 					.Default_state=LED_OFF
 		       	}
 

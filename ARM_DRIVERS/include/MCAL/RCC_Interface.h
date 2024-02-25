@@ -283,7 +283,7 @@ RCC_enuErrorStatus_t RCC_EnableClk(RCC_Clock_t Clock,  RCC_CSS_State_t CSS);
 RCC_enuErrorStatus_t RCC_DisableClk(RCC_Clock_t Clock);
 RCC_enuErrorStatus_t RCC_SelectSysClk(RCC_Clock_t SysClock);
 RCC_enuErrorStatus_t RCC_ConfigurePLL(u32 PLLSRC, u32 PLLM, u32 PLLN, u32 PLLP,u32 PLLQ );
-RCC_enuErrorStatus_t RCC_ControlPeripheral(u8 BusID, RCC_AHB1ENR_Bits_t Peripheral,u8 state);
+RCC_enuErrorStatus_t RCC_ControlPeripheral(u8 BusID, u8 Peripheral,u8 state);
 RCC_enuErrorStatus_t RCC_ConfigurePresc(u8 Presacaler_Type, u8 Division_Factor);
 
 #endif

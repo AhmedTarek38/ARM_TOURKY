@@ -46,7 +46,7 @@ LED_enuErrorStatus_t LED_Init(void)
 * @details  : Function to set the value of a specified lED to a specific state either ON OR OFF
 */
 
-LED_enuErrorStatus_t LED_SetStatus(u32 LED, u32 LEDStatus)
+LED_enuErrorStatus_t LED_SetStatus(LEDS_t LED, u32 LEDStatus)
 
 
 {
