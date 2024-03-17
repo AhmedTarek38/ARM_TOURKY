@@ -42,6 +42,8 @@
 #include "MCAL/GPIO_Interface.h"
 #include "HAL/SWITCH_Interface.h"
 #include "HAL/LED.h"
+#include "MCAL/NVIC.h"
+
 
 #define ENABLE 1
 #define DISABLE 0
@@ -66,7 +68,8 @@
 #pragma GCC diagnostic ignored "-Wreturn-type"
 
 
-int main(void)
+//LED,SWITCH,RCC _TEST
+ /* int main(void)
 {
        RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
        RCC_SelectSysClk(CLOCK_enuHSI);
@@ -85,6 +88,7 @@ int main(void)
     {
 	  SWITCH_SetStatus(SWITCH_1, &s1);
 	  SWITCH_SetStatus(SWITCH_2, &s2);
+
 
 	 if (s1== SWITCH_PRESSED)
 	  {
@@ -106,7 +110,53 @@ int main(void)
 
     }
   return 0;
+}*/
+
+//NVIC_TEST
+
+/*void delay_ms(u32 ms)
+ {
+    for (volatile u32 i = 0; i < ms * 16000; ++i)
+    {
+
+    }
+}*/
+ void EXTI0_IRQHandler(void)
+ {
+
+	  LED_SetStatus(LED_1, LED_ON);
+
+ }
+
+ /*void EXTI1_IRQHandler (void)
+  {
+
+ 	  LED_SetStatus(LED_1, LED_OFF);
+
+  }*/
+int main (void)
+{
+    RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
+	RCC_SelectSysClk(CLOCK_enuHSI);
+    RCC_ConfigurePresc(AHB_PRESCALER,AHB_DIVISION_BY_64);
+	RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
+    LED_Init();
+    Enable_NVIC_IRQ(EXTI0);
+    SetPendingIRQ(EXTI0);
+    //Generate_SW_Interrupt(EXTI0);
+
+
+
+while (1)
+{
+
 }
+
+	return 0;
+}
+
+
+
 
 #pragma GCC diagnostic pop
 
