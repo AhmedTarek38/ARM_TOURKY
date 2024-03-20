@@ -59,9 +59,9 @@ STK_enuErrorStatus_t STK_SetConfig(u32 MODE)
 	STK_enuErrorStatus_t Ret_enuErrorStatusSTK = STK_enuOK;
 	u32 Loc_Regconfig=STK->STK_CTRL;
 
-	if (MODE!=CLKSRC_AHB_8_EXC_DIS ||
-		MODE!=CLKSRC_AHB_8_EXC_EN  ||
-		MODE!=CLKSRC_AHB_EXC_DIS   ||
+	if (MODE!=CLKSRC_AHB_8_EXC_DIS &&
+		MODE!=CLKSRC_AHB_8_EXC_EN  &&
+		MODE!=CLKSRC_AHB_EXC_DIS   &&
 		MODE!=CLKSRC_AHB_EXC_EN)
 	{Ret_enuErrorStatusSTK= STK_enuNOK;}
 	else
@@ -123,7 +123,7 @@ STK_enuErrorStatus_t STK_SetCallBack(STK_CBF_t Call_Back)
 	return Ret_enuErrorStatusSTK;
 }
 
-void SysTick_Handler(void)
+void SysTick_Handler (void)
 {
 	if (APP_CALLBACK)
 	{

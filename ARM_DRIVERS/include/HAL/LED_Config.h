@@ -14,6 +14,7 @@ typedef enum
 {
     LED_1,
     LED_2,
+	LED_3,
 
    /*configure the desired number of LEDS*/
 

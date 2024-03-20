@@ -42,7 +42,10 @@
 #include "MCAL/GPIO_Interface.h"
 #include "HAL/SWITCH_Interface.h"
 #include "HAL/LED.h"
-#include "MCAL/NVIC.h"
+//#include "MCAL/NVIC.h"
+#include "MCAL/SYSTICK.h"
+#include "SERVICE/SCHED.h"
+#include "APP/Traffic.h"
 
 
 #define ENABLE 1
@@ -110,8 +113,9 @@
 
     }
   return 0;
-}*/
 
+}*/
+  /****************************************************************************************/
 //NVIC_TEST
 
 /*void delay_ms(u32 ms)
@@ -120,7 +124,7 @@
     {
 
     }
-}*/
+}
  void EXTI0_IRQHandler(void)
  {
 
@@ -128,12 +132,6 @@
 
  }
 
- /*void EXTI1_IRQHandler (void)
-  {
-
- 	  LED_SetStatus(LED_1, LED_OFF);
-
-  }*/
 int main (void)
 {
     RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
@@ -153,8 +151,49 @@ while (1)
 }
 
 	return 0;
-}
+}*/
+/*************************************************************************************************
+ */
+//SCHED_TEST
 
+/*int main (void)
+{
+ Traffic_light_init();
+  Sched_Init();
+  Sched_Start();
+
+  return 0;
+}*/
+/************************************************************************************************/
+  //SYSTICK_TEST
+void LEDON()
+{
+
+		LED_SetStatus(LED_1,LED_ON);
+
+}
+int main (void)
+{
+	       RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
+	       RCC_SelectSysClk(CLOCK_enuHSI);
+
+	       RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
+	       LED_Init();
+	       STK_SetConfig(CLKSRC_AHB_EXC_EN);
+	       STK_SetCallBack(LEDON);
+	       STK_SetTimeMS(100);
+	       STK_Start();
+
+	       while (1)
+	       {
+
+
+	       }
+
+
+
+  return 0;
+}
 
 
 

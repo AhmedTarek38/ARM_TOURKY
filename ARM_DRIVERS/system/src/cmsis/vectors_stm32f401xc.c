@@ -30,6 +30,7 @@
 
 #include <cortexm/exception-handlers.h>
 
+
 // ----------------------------------------------------------------------------
 
 void __attribute__((weak))
@@ -294,6 +295,7 @@ pHandler __isr_vectors[] =
 // specific handler is not present in the application code.
 // When in DEBUG, trigger a debug exception to clearly notify
 // the user of the exception and help identify the cause.
+
 
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
