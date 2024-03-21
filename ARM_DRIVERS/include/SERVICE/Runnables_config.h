@@ -9,7 +9,7 @@
 #define RUNNABLED_H_
 
 /* Configure tick period to be equal to or less than the period of the smallest period in all runnables */
-#define TICK_TIME_MS       300
+#define TICK_TIME_MS       1000
 /*Enum defines number of runnables in the system to be run by sched*/
 
 typedef enum

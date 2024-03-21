@@ -54,36 +54,39 @@ void RunnableTraffic(void)
 	{
 	case LED1_Green:
 		GreenLight();
-		if (seconds%6==0)
+		if (seconds==4)
 		{
+
 			TrafficStatus=LED2_Yellow;
 			prev=LED1_Green;
+			seconds=0;
 
 		} break;
 	case LED2_Yellow:
 		YellowLight();
-			if (seconds%2==0)
+			if (seconds==2)
 			{
 				if (prev == LED3_RED) {
 				    TrafficStatus = LED1_Green;
 				} else {
 				    TrafficStatus = LED3_RED;
 				}
+				seconds=0;
 
 			} break;
 
 
 	case LED3_RED:
 		REDLight();
-					if (seconds%4==0)
-					{
-						TrafficStatus=LED2_Yellow;
-									prev=LED3_RED;
+				if (seconds==10)
+				{
+				 TrafficStatus=LED2_Yellow;
+				 prev=LED3_RED;
+				 seconds=0;
+				} break;
 
-					} break;
 
-
-
+default: break;
 
 
 

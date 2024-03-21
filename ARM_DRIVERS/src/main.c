@@ -42,7 +42,7 @@
 #include "MCAL/GPIO_Interface.h"
 #include "HAL/SWITCH_Interface.h"
 #include "HAL/LED.h"
-//#include "MCAL/NVIC.h"
+#include "MCAL/NVIC.h"
 #include "MCAL/SYSTICK.h"
 #include "SERVICE/SCHED.h"
 #include "APP/Traffic.h"
@@ -156,20 +156,30 @@ while (1)
  */
 //SCHED_TEST
 
-/*int main (void)
+int main (void)
 {
  Traffic_light_init();
   Sched_Init();
   Sched_Start();
 
   return 0;
-}*/
+}
 /************************************************************************************************/
   //SYSTICK_TEST
-void LEDON()
+/*void LEDON()
 {
+static u8 flag=0;
 
+if (flag == 0)
+{
 		LED_SetStatus(LED_1,LED_ON);
+		flag=1;
+}
+   else
+  {
+		LED_SetStatus(LED_1,LED_OFF);
+			flag=0;
+  }
 
 }
 int main (void)
@@ -180,8 +190,9 @@ int main (void)
 	       RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
 	       LED_Init();
 	       STK_SetConfig(CLKSRC_AHB_EXC_EN);
+	       STK_SetTimeMS(1000);
 	       STK_SetCallBack(LEDON);
-	       STK_SetTimeMS(100);
+
 	       STK_Start();
 
 	       while (1)
@@ -193,7 +204,7 @@ int main (void)
 
 
   return 0;
-}
+}*/
 
 
 
