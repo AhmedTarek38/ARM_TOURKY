@@ -34,7 +34,7 @@ Runnable_t RunnableList[_Runnables_Number]=
  [Runnable_traffic]=
 					{
 					 .Runnable_Name="Traffic runnable",
-					 .PeriodicityMS=300,
+					 .PeriodicityMS=2000,
 					 .CB=RunnableTraffic,
 					 .DelayMs=0,
 					},

@@ -93,7 +93,7 @@ STK_enuErrorStatus_t STK_SetTimeMS(u32 TimeMs)
 
 	}
 	/*calculate the reload value*/
-    Loc_Temp=((Loc_MicroClkFreq * TimeMs)/1000)-1;
+    Loc_Temp=((Loc_MicroClkFreq/1000) * TimeMs)-1;
 
     if (Loc_Temp<0x000000001 || Loc_Temp>0x00FFFFFF)
     {
