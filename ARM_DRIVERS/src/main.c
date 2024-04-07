@@ -216,20 +216,20 @@ void LCDTest_Runnable(void)
 	 static u32 Count=0;
 	    if (Count==2)
 	    {
-	    CLCD_WriteStringAsynch("11:11",5);
+	    CLCD_WriteStringAsynch("Ahmed",5);
 	    }
-	    else if (Count==3)
+	    else if (Count==5)
 	    {
 	      CLCD_ClearDisplayAsynch();
 	    }
 
-	     else if (Count==4)
+	     else if (Count==6)
 	    {
-	      CLCD_SetCursorAsynch(LINE2,COL3);
+	      CLCD_SetCursorAsynch(LINE2,COL1);
 	    }
-	    else if (Count==5)
+	    else if (Count==7)
 	    {
-	    	CLCD_WriteStringAsynch("ME & Her Forever",16);
+	    	CLCD_WriteStringAsynch("WELCOME HOME",12);
 	    }
 	    	    Count++ ;
 

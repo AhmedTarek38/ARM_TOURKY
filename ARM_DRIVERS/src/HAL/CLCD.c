@@ -12,6 +12,9 @@
 #define CLCD_ENABLE_OFF  0x00
 #define CLCD_ENABLE_ON   0x01
 
+#define CLCD_LOW   0x00
+#define CLCD_HIGH  0x01
+
 
 #define EIGHT_BIT_MODE 0x00000008
 #define FOUR_BIT_MODE  0x00000004
@@ -193,8 +196,8 @@ static CLCD_enuErrorStatus_t CLCD_SendCommand(u8 Command)
 
     if (CLCD_EnablePinState== CLCD_ENABLE_OFF)
  {
-    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RS].Port,LCDS[RS].Pin,GPIO_RESET_PIN);
-    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RW].Port,LCDS[RW].Pin,GPIO_RESET_PIN);
+    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RS].Port,LCDS[RS].Pin,CLCD_LOW);
+    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RW].Port,LCDS[RW].Pin,CLCD_LOW);
 
     for (Loc_index=0;Loc_index<_LCD_NUM-CONTROL_PINS;Loc_index++)
     {
@@ -225,8 +228,8 @@ static CLCD_enuErrorStatus_t CLCD_SendData(u8 Data)
 
     if (CLCD_EnablePinState== CLCD_ENABLE_OFF)
  {
-    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RS].Port,LCDS[RS].Pin,GPIO_SET_PIN);
-    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RW].Port,LCDS[RW].Pin,GPIO_RESET_PIN);
+    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RS].Port,LCDS[RS].Pin,CLCD_HIGH);
+    Ret_enuErrorStatusCLCD=GPIO_Set_PinValue(LCDS[RW].Port,LCDS[RW].Pin,CLCD_LOW);
 
     for (Loc_index=0;Loc_index<_LCD_NUM-CONTROL_PINS;Loc_index++)
     {
@@ -310,7 +313,7 @@ static CLCD_enuErrorStatus_t CLCD_InitState(void)
 	static u8 counts=0;
 	case CLCD_POWER_ON:
 		counts++;
-		if (counts=20)
+		if (counts==20)
 		{
 		Ret_enuErrorStatusCLCD=CLCD_PowerOn_proc();
 		InitMode=CLCD_Functional_Set;
