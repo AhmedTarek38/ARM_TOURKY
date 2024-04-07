@@ -46,6 +46,7 @@
 #include "MCAL/SYSTICK.h"
 #include "SERVICE/SCHED.h"
 #include "APP/Traffic.h"
+#include "HAL/CLCD.h"
 
 
 #define ENABLE 1
@@ -152,8 +153,8 @@ while (1)
 
 	return 0;
 }*/
-/*************************************************************************************************
- */
+/**************************************************************************************************/
+/*
 //SCHED_TEST
 
 int main (void)
@@ -163,7 +164,7 @@ int main (void)
   Sched_Start();
 
   return 0;
-}
+}*/
 /************************************************************************************************/
   //SYSTICK_TEST
 /*void LEDON()
@@ -205,6 +206,49 @@ int main (void)
 
   return 0;
 }*/
+
+/***********************************************************************************************/
+//LCD_TEST
+
+void LCDTest_Runnable(void)
+{
+
+	 static u32 Count=0;
+	    if (Count==2)
+	    {
+	    CLCD_WriteStringAsynch("11:11",5);
+	    }
+	    else if (Count==3)
+	    {
+	      CLCD_ClearDisplayAsynch();
+	    }
+
+	     else if (Count==4)
+	    {
+	      CLCD_SetCursorAsynch(LINE2,COL3);
+	    }
+	    else if (Count==5)
+	    {
+	    	CLCD_WriteStringAsynch("ME & Her Forever",16);
+	    }
+	    	    Count++ ;
+
+
+
+
+}
+
+int main ()
+{
+   RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
+   RCC_SelectSysClk(CLOCK_enuHSI);
+   RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
+
+	 CLCD_InitAsynch();
+	 Sched_Init();
+	 Sched_Start();
+
+}
 
 
 
