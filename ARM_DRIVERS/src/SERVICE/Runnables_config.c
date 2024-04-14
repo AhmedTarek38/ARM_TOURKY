@@ -41,7 +41,7 @@ Runnable_t RunnableList[_Runnables_Number]=
 					 .PeriodicityMS=2000,
 					 .CB=RunnableTraffic,
 					 .DelayMs=0,
-					},
+					},*/
 [Runnable_LCD]=
 					{
 					 .Runnable_Name="LCD SM",
@@ -55,7 +55,8 @@ Runnable_t RunnableList[_Runnables_Number]=
 					 .PeriodicityMS=1000,
 					 .CB=LCDTest_Runnable,
 					 .DelayMs=0,
-					},*/
+					},
+					/*
 [HSWITCH]=
 					{
 					 .Runnable_Name="HSWITCH",
@@ -69,7 +70,7 @@ Runnable_t RunnableList[_Runnables_Number]=
 					 .PeriodicityMS=200,
 					 .CB=Runnable_HSWITCH_TEST,
 					 .DelayMs=0,
-					},
+					},*/
 
 
 };
