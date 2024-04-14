@@ -11,9 +11,9 @@
 #define GPIOE_BASEADD  (void*)(0x40021000)
 #define GPIOH_BASEADD  (void*)(0x40021C00)
 
-#define GPIO_GETMODE_MASK       0x00000003
-#define GPIO_GETOUT_TYPE_MASK   0x00000004
-#define GPIO_GETPULL_TYPE_MASK  0x000000018
+#define GPIO_GETMODE_MASK          0x00000003
+#define GPIO_GETOUT_TYPE_MASK      0x00000004
+#define GPIO_GETPULL_TYPE_MASK     0x00000018
 
 #define GPIO_OUT_TYPE_SHIFT         2
 #define GPIO_PULL_TYPE_SHIFT        3
@@ -25,7 +25,7 @@
 
 #define SHIFT_MULTIPLICATION_FACTOR       					0x00000002
 
-
+#define GPIO_AF_CLR_MASK            0x0000000F
 
 typedef struct
 {

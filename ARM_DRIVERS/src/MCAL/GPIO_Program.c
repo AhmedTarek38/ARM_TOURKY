@@ -8,14 +8,19 @@ GPIO_enuErrorStatus_t GPIO_InitPin (GPIO_PinConfig_t *ptrToPinConfig)
 {
 	GPIO_enuErrorStatus_t Ret_enuErrorStatusGPIO = GPIO_enuOk;
 
-	  if (ptrToPinConfig == NULL)
+	            if (ptrToPinConfig == NULL)
 	   		    {
 	   		         Ret_enuErrorStatusGPIO = GPIO_NULLPOINTER ;
 	   		    }
-	   		    else if ((ptrToPinConfig->Port > GPIOH_BASEADD) || (ptrToPinConfig->Pin > GPIO_PIN15))
+	   		    else if  ((ptrToPinConfig->Pin) > GPIO_PIN15)
 	   		    {
 	   		    	Ret_enuErrorStatusGPIO = GPIO_WRONGPortORPin ;
 	   		    }
+	   		    else if (ptrToPinConfig->Port > GPIOH_BASEADD)
+				 {
+				Ret_enuErrorStatusGPIO = GPIO_enuNOk ;
+
+				 }
 	   		    else
 	   		    {
     u32 Loc_MODER=0;
@@ -59,7 +64,7 @@ GPIO_enuErrorStatus_t GPIO_InitPin (GPIO_PinConfig_t *ptrToPinConfig)
      Loc_MODER    |= ((Loc_ModeValue)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
      Loc_OSPEEDR  |= ((ptrToPinConfig->Speed) <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
      Loc_PUPDR    |= ((Loc_PUPDValue)  <<((ptrToPinConfig->Pin)*SHIFT_MULTIPLICATION_FACTOR));
-     Loc_OTYPER   |= ((Loc_OTYPER)<<((ptrToPinConfig->Pin)));
+     Loc_OTYPER   |= ((Loc_OutTypeValue)<<((ptrToPinConfig->Pin)));
 
 /*write the configuration on the register(configured by the user) to init the pin*/
     ((GPIO_PortRegisters *)(ptrToPinConfig -> Port)) -> GPIO_MODER   = Loc_MODER;
@@ -77,7 +82,7 @@ return Ret_enuErrorStatusGPIO;
 GPIO_enuErrorStatus_t  GPIO_Set_PinValue(void *Port , u32 PinNum , u32 PinStatus )
      {
 		GPIO_enuErrorStatus_t Ret_enuErrorStatusGPIO = GPIO_enuOk;
-		u8 Loc_var=0;
+
 
 		 if (Port == NULL)
 		    {
@@ -99,13 +104,10 @@ GPIO_enuErrorStatus_t  GPIO_Set_PinValue(void *Port , u32 PinNum , u32 PinStatus
 		    		break;
 
 		    	case GPIO_LOW:
-		    		((GPIO_PortRegisters *)Port )->GPIO_BSRR = (BSSR_BIT_VALUE<< PinNum+BSSR_OFFSET) ;
+		    		((GPIO_PortRegisters *)Port )->GPIO_BSRR = (BSSR_BIT_VALUE<< (PinNum+BSSR_OFFSET)) ;
 		    		break;
 
 		    	default: break;
-
-
-
 
 		    	}
 
@@ -144,3 +146,41 @@ GPIO_enuErrorStatus_t  GPIO_Set_PinValue(void *Port , u32 PinNum , u32 PinStatus
 
 
  }
+
+ GPIO_enuErrorStatus_t GPO_CFG_AF(void *Port,u32 PinNum,u32 AF_NUM)
+ {
+	 GPIO_enuErrorStatus_t Ret_enuErrorStatusGPIO = GPIO_enuOk;
+     u32 Local_AFRValue=0;
+     if (Port==NULL)
+     {
+    	 Ret_enuErrorStatusGPIO=GPIO_enuNOk;
+     }
+
+     else
+	 {
+    	 if(PinNum<=GPIO_AF7)
+    	 {
+    		 Local_AFRValue=((GPIO_PortRegisters *)Port )->GPIO_AFRL;
+    		 Local_AFRValue&=~(GPIO_AF_CLR_MASK<<(PinNum*4));
+    		 Local_AFRValue|=(AF_NUM<<(PinNum*4));
+    		 ((GPIO_PortRegisters *)Port )->GPIO_AFRL=Local_AFRValue;
+
+
+    	 }
+    	 else
+    	 {
+    		 Local_AFRValue=((GPIO_PortRegisters *)Port )->GPIO_AFRH;
+			 Local_AFRValue&=~(GPIO_AF_CLR_MASK<<((PinNum-8)*4));
+			 Local_AFRValue|=(AF_NUM<<((PinNum-8)*4));
+			 ((GPIO_PortRegisters *)Port )->GPIO_AFRH=Local_AFRValue;
+
+    	 }
+
+
+	 }
+
+
+	    return Ret_enuErrorStatusGPIO;
+
+ }
+

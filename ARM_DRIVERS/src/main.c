@@ -40,13 +40,16 @@
 #include "diag/trace.h"
 #include "MCAL/RCC_Interface.h"
 #include "MCAL/GPIO_Interface.h"
-#include "HAL/SWITCH_Interface.h"
 #include "HAL/LED.h"
+#include "HAL/SWITCH_Interface.h"
+#include "HAL/HSWITCH.h"
 #include "MCAL/NVIC.h"
 #include "MCAL/SYSTICK.h"
 #include "SERVICE/SCHED.h"
-#include "APP/Traffic.h"
-#include "HAL/CLCD.h"
+#include "HAL/LED_Config.h"
+#include "HAL/SWITCH_Config.h"
+//#include "APP/Traffic.h"
+//#include "HAL/CLCD.h"
 
 
 #define ENABLE 1
@@ -73,25 +76,25 @@
 
 
 //LED,SWITCH,RCC _TEST
- /* int main(void)
+/*
+ int main(void)
 {
        RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
        RCC_SelectSysClk(CLOCK_enuHSI);
-       RCC_ConfigurePresc(AHB_PRESCALER,AHB_DIVISION_BY_64);
-       RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
+       //RCC_ConfigurePresc(AHB_PRESCALER,AHB_DIVISION_BY_64);
+       //RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
        RCC_ControlPeripheral(RCC_AHB1,GPIOB,ENABLE);
-
 	   LED_Init();
-	   SWITCH_Init();
+
+	  SWITCH_Init();
 	   u32 s1=0;
 	   u32 s2=0;
 
 
-
   while (1)
     {
-	  SWITCH_SetStatus(SWITCH_1, &s1);
-	  SWITCH_SetStatus(SWITCH_2, &s2);
+	 SWITCH_GetStatus(SWITCH_1, &s1);
+	 SWITCH_GetStatus(SWITCH_2, &s2);
 
 
 	 if (s1== SWITCH_PRESSED)
@@ -107,10 +110,6 @@
 	 	  LED_SetStatus(LED_2, LED_ON);
 	 	 LED_SetStatus(LED_2, LED_OFF);
 	 	  }
-
-
-
-
 
     }
   return 0;
@@ -209,7 +208,7 @@ int main (void)
 
 /***********************************************************************************************/
 //LCD_TEST
-
+/*
 void LCDTest_Runnable(void)
 {
 
@@ -248,7 +247,65 @@ int main ()
 	 Sched_Init();
 	 Sched_Start();
 
+}*/
+//HSWITCH
+/*
+void Runnable_HSWITCH_TEST(void)
+{
+	u8 FIRST_SWITCH_STATUS;
+	u8 SECOND_SWITCH_STATUS;
+	u8 THIRD_SWITCH_STATUS;
+
+	HSWITCH_GetStatus(HSWITCH_1,&FIRST_SWITCH_STATUS);
+	HSWITCH_GetStatus(HSWITCH_2,&SECOND_SWITCH_STATUS);
+	HSWITCH_GetStatus(HSWITCH_3,&THIRD_SWITCH_STATUS);
+
+
+		if (FIRST_SWITCH_STATUS==HSWITCH_PRESSED)
+		{
+			LED_SetStatus(LED_1,LED_ON);
+
+		}
+	 else if (FIRST_SWITCH_STATUS==HSWITCH_RELEASED)
+	    {
+		LED_SetStatus(LED_1,LED_OFF);
+	    }
+
+
+	 if (SECOND_SWITCH_STATUS==HSWITCH_PRESSED)
+		{
+			LED_SetStatus(LED_2,LED_ON);
+
+		}
+	else if (SECOND_SWITCH_STATUS==HSWITCH_RELEASED)
+		{
+			LED_SetStatus(LED_2,LED_OFF);
+		}
+
+	if (THIRD_SWITCH_STATUS==HSWITCH_PRESSED)
+		{
+			LED_SetStatus(LED_3,LED_ON);
+
+		}
+	else if (THIRD_SWITCH_STATUS==HSWITCH_RELEASED)
+		{
+			LED_SetStatus(LED_3,LED_OFF);
+		}
+
 }
+
+int main()
+{
+	   RCC_EnableClk(CLOCK_enuHSI,CSS_enuON);
+	   RCC_SelectSysClk(CLOCK_enuHSI);
+	   //RCC_ControlPeripheral(RCC_AHB1,GPIOA,ENABLE);
+	   RCC_ControlPeripheral(RCC_AHB1,GPIOB,ENABLE);
+
+		 LED_Init();
+		 HSWITCH_Init();
+		 Sched_Init();
+		 Sched_Start();
+}*/
 
 
 
