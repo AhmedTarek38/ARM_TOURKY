@@ -60,7 +60,8 @@ typedef enum
     CLCD_NoReq,
     CLCD_Write,
     CLCD_Clear,
-    CLCD_SetCursor
+    CLCD_SetCursor,
+	CLCD_WriteNumber
 } CLCD_UserReqType_t;
 
 typedef enum
@@ -70,6 +71,12 @@ typedef enum
 	CLCD_WriteCharacter,
 	CLCD_WriteDone
 } CLCD_WriteState_t;
+
+typedef enum
+{
+	CLCD_WriteNumStart,
+	CLCD_WriteNum,
+}CLCD_WriteNumState_t;
 
 typedef enum
 {
@@ -104,6 +111,7 @@ static u32 CLCD_EnablePinState = CLCD_ENABLE_OFF;
 static CLCD_State_t CLCDState = CLCD_Off;
 static CLCD_InitMode_t InitMode = CLCD_POWER_ON;
 static CLCD_WriteState_t WriteState = CLCD_WriteStart;
+static CLCD_WriteNumState_t WriteNumState = CLCD_WriteNumStart;
 static CLCD_SetPosState_t PositionState=CLCD_SetPosStart;
 static CLCD_Write_t Current_Write_Pos;
 
@@ -120,6 +128,8 @@ static CLCD_enuErrorStatus_t CLCD_PowerOn_proc(void);
 static CLCD_enuErrorStatus_t CLCD_InitState(void);
 static CLCD_enuErrorStatus_t CLCD_Write_Proc(void);
 static CLCD_enuErrorStatus_t CLCD_SetPosition_Proc(void);
+static CLCD_enuErrorStatus_t CLCD_WriteNum_Proc(void);
+
 
 
 
@@ -148,6 +158,9 @@ void RunnableLCD(void)
 			    	  break;
 			      case CLCD_SetCursor:
 			    	  CLCD_SetPosition_Proc();
+			    	  break;
+			      case CLCD_WriteNumber:
+			    	  CLCD_WriteNum_Proc();
 			    	  break;
 
 			      default:
@@ -413,6 +426,41 @@ return Ret_enuErrorStatusCLCD;
 
 }
 
+static CLCD_enuErrorStatus_t CLCD_WriteNum_Proc(void)
+{
+	CLCD_enuErrorStatus_t Ret_enuErrorStatusCLCD = CLCD_enuOK;
+
+	switch (WriteNumState)
+	{
+	  case CLCD_WriteNumStart:
+		  WriteNumState=CLCD_WriteNum;
+			Current_Write_Pos.ColPos=0;
+		  break;
+	  case CLCD_WriteNum:
+			if(Current_Write_Pos.ColPos != CLCD_UserRequest.Length)
+			{
+				CLCD_SendData(CLCD_UserRequest.String[Current_Write_Pos.ColPos]);
+				if (CLCD_EnablePinState==CLCD_ENABLE_OFF)
+				{
+					Current_Write_Pos.ColPos++;
+
+				}
+			}
+			else
+			{
+				CLCD_UserRequest.state=CLCD_Ready;
+				CLCD_UserRequest.Type=CLCD_NoReq;
+				WriteState=CLCD_WriteNumStart;
+
+			}
+		  break;
+	  default:  break;
+
+	}
+
+return Ret_enuErrorStatusCLCD;
+}
+
 static CLCD_enuErrorStatus_t CLCD_SetPosition_Proc(void)
 {
 	CLCD_enuErrorStatus_t Ret_enuErrorStatusCLCD = CLCD_enuOK;
@@ -447,6 +495,8 @@ static CLCD_enuErrorStatus_t CLCD_SetPosition_Proc(void)
 
 return Ret_enuErrorStatusCLCD;
 }
+
+
 /**************************************User Functions Asynch/sync*************************************/
 
 CLCD_enuErrorStatus_t CLCD_InitAsynch(void)
@@ -514,6 +564,51 @@ CLCD_enuErrorStatus_t CLCD_WriteStringAsynch(u8 * Ptr_string,u8 Length)
 
 }
 
+CLCD_enuErrorStatus_t CLCD_WriteNumAsynch(u32 NUM)
+{
+	CLCD_enuErrorStatus_t Ret_enuErrorStatusCLCD = CLCD_enuOK;
+	static u8 Num_Buff[16];
+	u8 Loc_Count=0;
+	u8 Loc_index=0;
+	u32 Loc_temp=NUM;
+	if(CLCDState==CLCD_Operation && CLCD_UserRequest.state==CLCD_Ready)
+	{
+		CLCD_UserRequest.state=CLCD_Busy;
+		CLCD_UserRequest.Type=CLCD_Write;
+		if (NUM==0)
+		{
+			Loc_Count++;
+		}
+		else
+		{
+			while (Loc_temp!=0)
+			{
+				Loc_temp=Loc_temp/10;
+				Loc_Count++;
+			}
+
+		}
+		Loc_index=Loc_Count-1;
+		while (Loc_index!=0xFF)
+		{
+			Num_Buff[Loc_index]=(NUM%10)+'0';
+			NUM=NUM/10;
+			Loc_index--;
+		}
+		CLCD_UserRequest.Length=Loc_Count;
+		CLCD_UserRequest.String=Num_Buff;
+
+	}
+	else
+	{
+		Ret_enuErrorStatusCLCD = CLCD_enuNOK;
+
+	}
+
+    return Ret_enuErrorStatusCLCD;
+
+}
+
 CLCD_enuErrorStatus_t CLCD_SetCursorAsynch(u8 XPOS,u8 YPOS)
 {
 	CLCD_enuErrorStatus_t Ret_enuErrorStatusCLCD = CLCD_enuOK;
@@ -567,4 +662,7 @@ CLCD_enuErrorStatus_t CLCD_GetStatus(u8 *Ptr_LcdStatus)
 return Ret_enuErrorStatusCLCD;
 
 }
+
+
+
 /***********************************************************************************************/

@@ -49,7 +49,7 @@
 #include "HAL/LED_Config.h"
 #include "HAL/SWITCH_Config.h"
 //#include "APP/Traffic.h"
-//#include "HAL/CLCD.h"
+#include "HAL/CLCD.h"
 
 
 #define ENABLE 1
@@ -208,7 +208,7 @@ int main (void)
 
 /***********************************************************************************************/
 //LCD_TEST
-/*
+
 void LCDTest_Runnable(void)
 {
 
@@ -230,6 +230,14 @@ void LCDTest_Runnable(void)
 	    {
 	    	CLCD_WriteStringAsynch("WELCOME HOME",12);
 	    }
+	    else if (Count==9)
+	    {
+		      CLCD_ClearDisplayAsynch();
+	    }
+	    else if (Count==11)
+	  	    {
+	    	  CLCD_WriteNumAsynch(1520);
+	  	    }
 	    	    Count++ ;
 
 
@@ -247,7 +255,7 @@ int main ()
 	 Sched_Init();
 	 Sched_Start();
 
-}*/
+}
 //HSWITCH
 /*
 void Runnable_HSWITCH_TEST(void)

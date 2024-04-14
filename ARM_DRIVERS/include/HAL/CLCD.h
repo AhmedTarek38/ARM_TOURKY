@@ -52,6 +52,9 @@ CLCD_enuErrorStatus_t CLCD_GetStatus(u8 *Ptr_LcdStatus);
 CLCD_enuErrorStatus_t CLCD_ClearDisplayAsynch(void);
 CLCD_enuErrorStatus_t CLCD_WriteStringAsynch(u8 * Ptr_string,u8 Length);
 CLCD_enuErrorStatus_t CLCD_SetCursorAsynch(u8 XPOS,u8 YPOS);
+CLCD_enuErrorStatus_t CLCD_WriteNumAsynch(u32 NUM);
+
+
 
 
 
