@@ -10,6 +10,7 @@
 
 extern SWITCH_CFG_t SWITCHES [_SWITCH_NUM];
 
+
 SWITCH_enuErrorStatus_t SWITCH_Init(void)
 
 {
@@ -33,7 +34,7 @@ return Ret_enuErrorStatusSWITCH;
 
 }
 
-SWITCH_enuErrorStatus_t SWITCH_SetStatus(SWITCHES_t SWITCH_NAME, u32 * ptr_TO_SWITCHStatus)
+SWITCH_enuErrorStatus_t SWITCH_GetStatus(SWITCHES_t SWITCH_NAME, u32 * ptr_TO_SWITCHStatus)
 
 {
 	SWITCH_enuErrorStatus_t Ret_enuErrorStatusSWITCH = SWITCH_enuOK;
